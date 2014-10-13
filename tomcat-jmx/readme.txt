@@ -1,0 +1,3 @@
+分别在linux和window平台下配置JMX 监控tomcat;
+
+监控工具使用JvisualVM;
