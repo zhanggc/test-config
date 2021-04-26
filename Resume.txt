@@ -1,32 +1,13 @@
-CREATE TABLE `t_datasource_def_audit` (
-  `RECORDID` varchar(32) NOT NULL COMMENT '记录ID',
-  `ID` varchar(32) NOT NULL COMMENT '唯一ID',
-  `CHNAME` varchar(255) NOT NULL COMMENT '数据源中文名称',
-  `ENNAME` varchar(255) NOT NULL COMMENT '数据源英文名称',
-  `REMARK` varchar(300) DEFAULT NULL COMMENT '备注',
-  `APPSETFIRSTKINDID` varchar(3) DEFAULT NULL COMMENT '候选集一级分类',
-  `APPSETSECONDKINDID` varchar(1024) DEFAULT NULL,
-  `APPSETCORETAG` varchar(4096) DEFAULT NULL,
-  `MODIFY_ID` varchar(32) DEFAULT NULL COMMENT '修改人id',
-  `MODIFY_DATE` datetime DEFAULT NULL COMMENT '修改时间',
-  `ODDEVENFLAG` tinyint(4) DEFAULT '0' COMMENT '排序列表取奇偶位',
-  `GRAYFLAG` tinyint(4) DEFAULT '0' COMMENT '灰度标识：0-现网数据源 1-灰度数据源',
-  `ZONES` varchar(1500) DEFAULT NULL COMMENT '区域运营保存时，需要把当前运营人员管理的区域写入',
-  `MERGER_MODE` tinyint(4) DEFAULT '0' COMMENT '0:普通合并;1:垂直合并',
-  `RESTYPE` varchar(4) DEFAULT NULL COMMENT '开放内容资源位类型，ST:信息流内容，OT:老的开放内容',
-  `MAXNUM` int(11) DEFAULT '-1' COMMENT '排序列表最大数量，-1时表示不限制',
-  `OFFLINEFLOWID` varchar(32) DEFAULT NULL COMMENT '关联线下决策电子流单号',
-  `MEMO` varchar(512) DEFAULT NULL COMMENT '申请备注',
-  `PARENTID` varchar(32) DEFAULT NULL COMMENT '父记录ID',
-  `CREATETYPE` tinyint(4) DEFAULT '1' COMMENT '创建类型：1.运营创建；2.系统创建',
-  `STATE` tinyint(4) DEFAULT '3' COMMENT '数据源状态：0：草稿；1：新建审批中 ；3：已生效 ；5：修改审批中；7：失效审批中；99：已失效',
-  `SUBSTANCESUBTYPE` tinyint(4) DEFAULT '0' COMMENT '内容子类型：11：发行商内容',
-  `MULTI_CHOICE` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否多选，0不多选，1多选',
-  `SUBSTANCE_TYPES` varchar(32) DEFAULT NULL COMMENT '内容类型，多个以逗号分隔，1：推荐内容，7，开放内容',
-  `ASSOCIATE_FLAG` tinyint(4) DEFAULT '0' COMMENT '是否关联数据源，0不是，1是',
-  `ASSOCIATE_SCDC_ID` varchar(32) DEFAULT NULL COMMENT '关联数据源ID',
-  PRIMARY KEY (`RECORDID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='自定义内容数据源审核表';
+Mysql数据库利用版本号做来库存扣减避免脏写，但是存在一个网络问题会导致重复扣减库存: 当库存扣减update语句提交事务后，mysql执行事务成功;mysql将成功执行响应返回给应用时网络波动导致应用接收不到甚至连接断开异常,然后应用重新查询库存（其实已经扣减库存成功了）进行库存扣减;
+例如:库存Stock表，库存数量count为10，版本号version为1
+1、第一次进行库存扣减:update stock set count=9,version=2 where version=1;
+2、事务执行成功但是网络波动导致应用接收不到甚至连接断开异常
+3、重新查询库存,此时库存数量count为9，版本号version为2
+4、第二次进行库存扣减:update stock set count=8,version=3 where version=2;
+5、出现库存重复扣减
+
+以上情况有出现可能吗?
+如果可能出现以上情况，如何解决?
 
 
 
@@ -44,9 +25,9 @@ MrWish
 5、向用户展示抽取积分
 
 技术优化:
-1、有库存的积分商品参与抽取
-2、商品服务库存扣减接口保证幂等性;利用Redis缓存做库存扣减, 并且在缓存中设置订单id扣减库存标识(订单id、商品id组成key), 防止重复扣减，保证幂等性
-3、商品服务缓存库存扣减异步消息同步真实库存, 扣减库存利用死信队列做事务补偿，保证最终一致性
+1、抽取到的积分商品进行库存扣减成功后，直接返回给用户抽取积分;订单服务免支付下单、用户服务增加用户积分均通过订阅MQ消息异步处理，缩短请求响应时间；
+2、商品服务库存扣减接口保证幂等性;利用Redis缓存做库存扣减, 降低数据库压力;在缓存中设置订单id扣减库存标识(订单id、商品id组成key), 防止重复扣减，保证幂等性
+3、商品服务缓存库存扣减且异步消息同步数据库库存;数据库扣减库存利用死信队列做事务补偿，保证最终一致性
 4、分布式事务解决订单创建、支付订单创建、积分扣减一致性
 5、
 
