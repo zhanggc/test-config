@@ -1,3 +1,21 @@
+CREATE TABLE `t_datasource_def_audit` (
+  `RECORDID` varchar(32) NOT NULL COMMENT '记录ID',
+  `ID` varchar(32) NOT NULL COMMENT '唯一ID',
+  `CHNAME` varchar(255) NOT NULL COMMENT '数据源中文名称',
+  `ENNAME` varchar(255) NOT NULL COMMENT '数据源英文名称',
+  `REMARK` varchar(300) DEFAULT NULL COMMENT '备注',
+  `APPSETFIRSTKINDID` varchar(3) DEFAULT NULL COMMENT '候选集一级分类',
+  `APPSETSECONDKINDID` varchar(1024) DEFAULT NULL,
+  `APPSETCORETAG` varchar(4096) DEFAULT NULL,
+  `RULE` int(4) DEFAULT NULL COMMENT '数据源获取规则，1按配置时间，2按名称国际标准，3，按上架时间，4，继承管理列表排序',
+  `MULTI_CHOICE` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否多选，0不多选，1多选',
+  `SUBSTANCE_TYPES` varchar(32) DEFAULT NULL COMMENT '内容类型，多个以逗号分隔，1：推荐内容，7，开放内容',
+  `ASSOCIATE_FLAG` tinyint(4) DEFAULT '0' COMMENT '是否关联数据源，0不是，1是',
+  `ASSOCIATE_SCDC_ID` varchar(32) DEFAULT NULL COMMENT '关联数据源ID',
+  PRIMARY KEY (`RECORDID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='自定义内容数据源审核表';
+
+
 
 MrWish
 -------------------------
