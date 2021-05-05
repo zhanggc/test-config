@@ -1,6 +1,7 @@
 
 caffeine 与 redis 实现多级缓存
-https://tech.antfin.com/docs/2/69656
+Redis面试题
+https://www.huaweicloud.com/articles/9ec5b097a52d663e11d29c8ba3369569.html
 
 
 MrWish
