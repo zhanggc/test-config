@@ -6,8 +6,12 @@
 Java基础复习
 --------------------------------
 Unsafe 待深入研究
+
 LockSupport 待深入研究
+
 AbstractQueuedSynchronizer Condition 条件队列实现
+
+AbstractQueuedSynchronizer提供独占、共享模式实现
 
 
 
