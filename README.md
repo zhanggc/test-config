@@ -12,9 +12,8 @@ JMM内存模型
 IO模型
 网络协议复习
 
-https://www.processon.com/view/link/5d81dec7e4b04c14c4e7aac8
-
-https://www.processon.com/view/link/5d81dec7e4b04c14c4e7aac8
+条件等待队列
+https://www.cnblogs.com/nevermorewang/p/9905939.html
 
 
 Unsafe 待深入研究
