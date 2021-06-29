@@ -6,23 +6,25 @@
 Java基础复习
 --------------------------------
 多线程
+独占、共享模式实现
+读写锁特性总结
+Unsafe 待深入研究
+LockSupport 待深入研究
+
+
+
+
 集合
 JVM 底层原理
 JMM内存模型
 IO模型
 网络协议复习
 
-条件等待队列
-https://www.cnblogs.com/nevermorewang/p/9905939.html
 
 
-Unsafe 待深入研究
 
-LockSupport 待深入研究
 
-AbstractQueuedSynchronizer Condition 条件队列实现
 
-AbstractQueuedSynchronizer提供独占、共享模式实现
 
 
 
