@@ -5,24 +5,25 @@
 
 Java基础复习
 --------------------------------
-多线程
+# 多线程
 
 -独占、共享模式实现
 
 -读写锁特性总结
 
--Unsafe 待深入研究
-
--LockSupport 待深入研究
+-同步工具类: Semaphore\CountDownLatch\CyclicBarrier\Atomic
 
 
+
+
+
+JMM内存模型
 
 
 集合
 
 JVM 底层原理
 
-JMM内存模型
 
 IO模型
 
