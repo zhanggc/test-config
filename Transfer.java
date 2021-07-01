@@ -1,19 +1,15 @@
-package org.guocai.test.java;
-
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.LinkedList;
-import java.util.List;
+package com.zhanggc.test.java;
 
 import com.alibaba.fastjson.JSON;
 
+import java.io.*;
+import java.util.LinkedList;
+import java.util.List;
+
 public class Transfer {
-    static String basePath = "D:\\修改\\";
-    static String inputFileName = "1.xmind";
-    static String outputFileName = "1-transfer.xmind";
+    static String basePath = "/Users/zhanggc/Program/Projects/reviews/简历编辑/";
+    static String inputFileName = "应聘Java高级工程师岗位-简版(20210701).doc";
+    static String outputFileName = "应聘Java高级工程师岗位-简版(20210701)-transfer.doc";
 
     /**
      * 每个块存储元素个数(每块2M)
@@ -21,8 +17,8 @@ public class Transfer {
     static int numPerBlock = (1 << 23) / 24;
 
     public static void main(String[] args) throws IOException {
-//        transferToTxt();
-        transferToScr();
+        transferToTxt();
+//        transferToScr();
     }
 
     public static void transferToTxt() throws IOException {
@@ -37,8 +33,9 @@ public class Transfer {
         if (len > numPerBlock) {
             List subList;
             int num = 1;
-            int all = len/numPerBlock;
+            int all = (int)Math.ceil((double) len/(double) numPerBlock);
             for (int i = 0; i <= len; ) {
+                System.out.println("开始处理:"+num+"/"+all);
                 int current = i;
                 i += numPerBlock;
                 int end = i;
@@ -51,12 +48,15 @@ public class Transfer {
                 output.write(str.getBytes("UTF-8"));
                 output.write("||".getBytes("UTF-8"));
                 output.flush();
-                System.out.println("处理完"+num+"/"+all);
+                System.out.println("处理完:"+num+"/"+all);
                 num++;
             }
         } else {
+            System.out.println("开始处理:1/1");
             String str = JSON.toJSONString(list);
             output.write(str.getBytes("UTF-8"));
+            System.out.println("处理完:1/1");
+
         }
         output.close();
         input.close();
