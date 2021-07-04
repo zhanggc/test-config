@@ -11,7 +11,9 @@ Java基础复习
 
 -读写锁特性总结
 
--同步工具类: Semaphore\CountDownLatch\CyclicBarrier\Atomic
+-JMM:
+
+> MESI协议
 
 
 
