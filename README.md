@@ -11,6 +11,9 @@ Java基础复习
 
 --集合
 
+https://www.cnblogs.com/lewisyoung/p/12981102.html#linkedblockingqueue_conclusion
+
+
 >同步机制
 
 >扩容时老数据的转移是并发执行
