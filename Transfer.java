@@ -18,9 +18,9 @@ import java.util.concurrent.Future;
 import com.alibaba.fastjson.JSON;
 
 public class Transfer {
-    static String basePath = "D:\\Workspaces\\中软国际\\考试\\考试资料\\Java架构师知识脑图\\修改\\";
-    static String inputFileName = "代码整洁之道.pdf";
-    static String outputFileName = "代码整洁之道-transfer.pdf";
+    static String basePath = "D:\\xxx\\修改\\";
+    static String inputFileName = "xxx.pdf";
+    static String outputFileName = "xxx-transfer.pdf";
 
     /**
      * 合并Json个数
@@ -141,6 +141,8 @@ public class Transfer {
     }
 
     public static void transferToScr() throws IOException {
+        System.out.println("开始处理...");
+        long start = System.currentTimeMillis();
         OutputStream output = new FileOutputStream(basePath + "dest" + System.getProperty("file.separator") + outputFileName);
         String jsonArrayStr = readAsString1();
         List<Integer> list = JSON.parseObject(jsonArrayStr, List.class);
@@ -152,6 +154,8 @@ public class Transfer {
             }
         });
         output.close();
+        System.out.println("处理完成...");
+        System.out.println("花费时间: " + (System.currentTimeMillis() - start) / 1000 + "秒");
     }
 
     public static String readAsString1() throws IOException {
