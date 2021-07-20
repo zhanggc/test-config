@@ -15,10 +15,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import com.alibaba.fastjson.JSON;
-
 public class Transfer {
-    static String basePath = "D:\\xxx\\修改\\";
+    static String basePath = "xxx\\";
     static String inputFileName = "xxx.pdf";
     static String outputFileName = "xxx-transfer.pdf";
 
@@ -145,22 +143,23 @@ public class Transfer {
         long start = System.currentTimeMillis();
         OutputStream output = new FileOutputStream(basePath + "dest" + System.getProperty("file.separator") + outputFileName);
         String jsonArrayStr = readAsString1();
-        List<Integer> list = JSON.parseObject(jsonArrayStr, List.class);
-        list.forEach(i -> {
+        String[] byteArray = jsonArrayStr.split(",");
+        for (String _byte : byteArray) {
             try {
-                output.write(i);
+                output.write(Integer.valueOf(_byte));
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        });
+        }
         output.close();
         System.out.println("处理完成...");
         System.out.println("花费时间: " + (System.currentTimeMillis() - start) / 1000 + "秒");
     }
 
     public static String readAsString1() throws IOException {
-        StringBuilder sb = new StringBuilder("[");
+        StringBuilder sb = new StringBuilder("");
         for (int i = 1; ; i++) {
+            System.out.println("开始读取文件:dest-" + i + ".txt");
             File file = new File(basePath + System.getProperty("file.separator") + "dest" + System.getProperty("file.separator") + "dest-" + i + ".txt");
             if (!file.exists()) {
                 break;
@@ -171,7 +170,8 @@ public class Transfer {
                 sb.append((char) n);
             }
             sb.append(",");
+            System.out.println("结束读取文件:dest-" + i + ".txt");
         }
-        return sb.substring(0, sb.length() - 1) + "]";
+        return sb.substring(0, sb.length() - 1);
     }
 }
