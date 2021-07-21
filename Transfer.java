@@ -2,6 +2,7 @@ package org.guocai.test.java;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,19 +17,19 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class Transfer {
-    static String basePath = "xxx\\";
+    static String basePath = "xxx\\修改\\";
     static String inputFileName = "xxx.pdf";
     static String outputFileName = "xxx-transfer.pdf";
 
     /**
      * 合并Json个数
      */
-    static final int NUM_MERGE_JSON = 10;
+    static final int NUM_MERGE_JSON = 2;
 
     /**
-     * Json最小包含元素个数(每块1MB)，转JSON特别耗时间，每次转个数尽量少
+     * Json最小包含元素个数(每块0.5MB)，转JSON特别耗时间，每次转个数尽量少
      */
-    static int NUM_TO_JSON = (1 << 23) / 24;
+    static int NUM_TO_JSON = (1 << 23) / 48;
 
     /**
      * 块包含元素个数
@@ -138,7 +139,7 @@ public class Transfer {
         }
     }
 
-    public static void transferToScr() throws IOException {
+    public static void transferToScr() throws IOException, ExecutionException, InterruptedException {
         System.out.println("开始处理...");
         long start = System.currentTimeMillis();
         OutputStream output = new FileOutputStream(basePath + "dest" + System.getProperty("file.separator") + outputFileName);
@@ -156,22 +157,44 @@ public class Transfer {
         System.out.println("花费时间: " + (System.currentTimeMillis() - start) / 1000 + "秒");
     }
 
-    public static String readAsString1() throws IOException {
-        StringBuilder sb = new StringBuilder("");
+    public static String readAsString1() throws ExecutionException, InterruptedException {
+        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        List<Future<String>> futures = new ArrayList<>();
         for (int i = 1; ; i++) {
-            System.out.println("开始读取文件:dest-" + i + ".txt");
             File file = new File(basePath + System.getProperty("file.separator") + "dest" + System.getProperty("file.separator") + "dest-" + i + ".txt");
             if (!file.exists()) {
                 break;
             }
-            InputStream input = new FileInputStream(file);
-            int n;
-            while ((n = input.read()) != -1) {
-                sb.append((char) n);
-            }
-            sb.append(",");
-            System.out.println("结束读取文件:dest-" + i + ".txt");
+            int finalI = i;
+            futures.add(executor.submit(() -> {
+                System.out.println("开始读取文件:dest-" + finalI + ".txt");
+                StringBuilder sb1 = new StringBuilder("");
+                InputStream input = null;
+                try {
+                    input = new FileInputStream(file);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                int n;
+                while (true) {
+                    try {
+                        if ((n = input.read()) == -1) break;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        return "";
+                    }
+                    sb1.append((char) n);
+                }
+                sb1.append(",");
+                System.out.println("结束读取文件:dest-" + finalI + ".txt");
+                return sb1.toString();
+            }));
         }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < futures.size(); i++) {
+            sb.append(futures.get(i).get());
+        }
+        executor.shutdown();
         return sb.substring(0, sb.length() - 1);
     }
 }
