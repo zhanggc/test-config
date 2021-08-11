@@ -1,4 +1,4 @@
-package org.guocai.test.java;
+package org.example;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,9 +17,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class Transfer {
-    static String basePath = "xxx\\修改\\";
-    static String inputFileName = "xxx.pdf";
-    static String outputFileName = "xxx-transfer.pdf";
+    static String basePath = "/xxx/";
+    static String inputFileName = "1.zip";
+    static String outputFileName = "1-transfer.zip";
 
     /**
      * 合并Json个数
@@ -142,6 +142,7 @@ public class Transfer {
     public static void transferToScr() throws IOException, ExecutionException, InterruptedException {
         System.out.println("开始处理...");
         long start = System.currentTimeMillis();
+        createDestDir();
         OutputStream output = new FileOutputStream(basePath + "dest" + System.getProperty("file.separator") + outputFileName);
         String jsonArrayStr = readAsString1();
         String[] byteArray = jsonArrayStr.split(",");
@@ -161,7 +162,7 @@ public class Transfer {
         ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         List<Future<String>> futures = new ArrayList<>();
         for (int i = 1; ; i++) {
-            File file = new File(basePath + System.getProperty("file.separator") + "dest" + System.getProperty("file.separator") + "dest-" + i + ".txt");
+            File file = new File(basePath + System.getProperty("file.separator") + "dest-" + i + ".txt");
             if (!file.exists()) {
                 break;
             }
