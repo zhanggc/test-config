@@ -6,27 +6,16 @@
 Java基础复习
 --------------------------------
 
+>存储引擎、索引
+> 容器数据结构记忆-List\Map
 
 
+HashMap
+-扩容死锁优化
+-扩容因子0.75
+-FailFast机制
 
---集合
-
-https://www.cnblogs.com/lewisyoung/p/12981102.html#linkedblockingqueue_conclusion
-
-
->同步机制
-
->扩容时老数据的转移是并发执行
-
->count计数
-
-JVM 底层原理
-
-
-IO模型
-
-网络协议复习
-
+ConcurrentHashMap
 
 
 
