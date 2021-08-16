@@ -6,17 +6,17 @@
 Java基础复习
 --------------------------------
 
-> 存储引擎、索引
+> 联合索引使用场景: 参考书
+
+> Sql优化
+
 > 容器数据结构记忆-List\Map
 
 
-HashMap
-> 扩容死锁优化
-> 扩容因子0.75
-> FailFast机制
 
-ConcurrentHashMap
-CopyOnWriteXXX
+
+> ConcurrentHashMap
+
 
 
 
