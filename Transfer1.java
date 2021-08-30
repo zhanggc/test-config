@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.alibaba.fastjson.JSON;
 
 public class Transfer {
-    static final String basePath = xxx";
+    static final String basePath = "xxx";
     static final String inputFileName = "1.zip";
     static final String outputFileName = "1-transfer.zip";
     static final String charMapFileName = "char-map.txt";
