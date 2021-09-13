@@ -1,4 +1,6 @@
 linux poll epoll 区别
+
+
 IO多路复用
 IO多路复用->复用的什么部分
 select\poll\epoll区别（最大区别是第一阶段，等待数据报的到来，epoll不会阻塞），有没有fd限制
@@ -12,3 +14,22 @@ Netty: IO模型、Reator模型
 同步非阻塞与io多路复用区别
 
 epoll水平触发模式和边沿触发模式，哪个好点
+
+
+
+
+
+
+unix IO模型
+
+
+select\poll\epoll 底层实现
+
+NIO
+
+AIO
+
+nettty线程模型
+
+TCP粘包、拆包
+
