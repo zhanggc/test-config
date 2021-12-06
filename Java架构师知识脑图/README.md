@@ -1,2 +1,2 @@
-
-https://github.com/Netflix/Hystrix/wiki/How-To-Use
+> hystrix滚动时间窗口计算
+> feign\ribbon\hystrix关系
