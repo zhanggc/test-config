@@ -137,3 +137,6 @@ OOM发生前兆，FullGC频繁发生
 让对象进入老年代原则
 
 
+https://www.cnblogs.com/ivictor/p/5849061.html
+
+
