@@ -1,3 +1,6 @@
+> 1、确认并发编程.xml 是否更改: Condition算法更改、日期13号 2、CycleBarrier实现与Reentrantlock 是否开放state状态 3、Rabbitmq 消息丢失场景、解决方案 4、Rabbitmq 重复消费场景
+
+
 
 微服务介绍
 http://wiki.inhuawei.com/pages/viewpage.action?pageId=284011104
