@@ -24,7 +24,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.alibaba.fastjson.JSON;
 
-public class Transfer {
+import sun.misc.Unsafe;
+
+public class Transfer1 {
     static final String basePath = "xxx";
     static final String inputFileName = "1.zip";
     static final String outputFileName = "1-transfer.zip";
@@ -54,7 +56,7 @@ public class Transfer {
         for (char i = 0; i <= 127; i++) {
             //33、35-37、39-43、45-59、61、63-91、93-127
             if((35<=i && i<=37)|| (39<=i && i<=43)|| (45<=i && i<=59)|| (63<=i && i<=91)|| (93<=i && i<=127)){
-                CHAR_TRANSFER.add(String.valueOf(i));
+                CHAR_TRANSFER.add(String.valueOf(i).intern());
             }
         }
 
@@ -128,8 +130,7 @@ public class Transfer {
         createDestDir();
         InputStream input = new FileInputStream(basePath + System.getProperty("file.separator") + inputFileName);
         int n;
-        List<Byte> numList = new LinkedList();
-        List<String> charList = new LinkedList();
+        List<Byte> numList = new ArrayList();
         NumFequency fequency = new NumFequency();
         StringBuilder trace = new StringBuilder();
         byte[] bytes = new byte[8192];
@@ -141,9 +142,17 @@ public class Transfer {
             }
         }
         fequency.assignChar();
-        numList.forEach(num -> {
-            charList.add(fequency.getChar(num));
-        });
+        List<String> charList = new ArrayList<>(numList.size());
+        try{
+            numList.forEach(num -> {
+                charList.add(fequency.getChar(num));
+            });
+        }catch (Throwable e){
+            int all = numList.size();
+            int copy = charList.size();
+            System.out.println("numList:"+numList.size()+",charList:"+charList.size()+",差:"+(all-copy));
+            throw e;
+        }
         int len = charList.size();
         if (len > NUM_TO_BLOCK) {
             int all = (int) Math.ceil((double) len / (double) NUM_TO_BLOCK);
